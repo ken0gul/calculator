@@ -2,6 +2,9 @@
 *::after,
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
 }
 
 .calculator {
@@ -12,17 +15,26 @@
 
     width: 400px;
     margin: 50px auto;
+    border-radius: 20px;
 
 
 }
 
-button {
+button,
+span {
     font-size: inherit;
     width: 100px;
     height: 100px;
     border: 1px solid black;
 
     background-color: #FF9B37;
+    color: #eee;
+}
+
+span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .number {
@@ -42,8 +54,9 @@ button {
     grid-column: 1 / -1;
     text-align: right;
     padding: 2.4rem 0 0 2.4rem;
+    height:100px;
 
-    border: 1px solid black;
+    /* border: 1px solid black; */
     background-color: #222;
     color: #eee;
 }
