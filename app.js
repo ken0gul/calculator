@@ -3,9 +3,11 @@ const display = document.querySelector('.display');
 const numbers = document.querySelectorAll('.number');
 const button = document.querySelectorAll('button');
 const equal = document.querySelector('.equal');
+const ac = document.querySelector('.ac');
+
+
 // Global Variables
 let array = [];
-let object = {};
 let currentInput;
 let result;
 let currentOperation;
@@ -129,7 +131,6 @@ function operate(operator, num1,num2) {
             result = operate(currentOperation, num1, num2);
             console.log(result)
             display.textContent = result;
-            // array.length = 0;
             console.log('Array : ' + array);
             
             
@@ -140,3 +141,15 @@ function operate(operator, num1,num2) {
     })
 
    
+    // Reset Button 
+
+    function resetCalc() {
+        ac.addEventListener('click', () => {
+            displayValue = '';
+            display.textContent = '';
+            array.length = 0;
+            currentInput = "";
+            result = "";
+        })
+    }
+    resetCalc();
