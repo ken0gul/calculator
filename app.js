@@ -5,6 +5,7 @@ const button = document.querySelectorAll('button');
 const equal = document.querySelector('.equal');
 const ac = document.querySelector('.ac');
 const del = document.querySelector('[data-id = del]');
+const dot = document.querySelector('[data-id = dot]');
 
 
 // Global Variables
@@ -57,12 +58,15 @@ function operate(operator, num1,num2) {
       
             // Return data-id of any number as a string when clicked
             currentInput = e.target.dataset.id;
-           
+            
          
+      
+
             // Concatenate it to displayValue
             displayValue  += currentInput;
             // Convert displayValue to a number
-            displayValue = +displayValue;
+            if (displayValue !== "." ) displayValue = +displayValue;
+            displayValue = displayValue
             // Display it on the screen
                     display.textContent = displayValue;
             // Store it into otherArray to be able to calculate it immediately
@@ -70,6 +74,9 @@ function operate(operator, num1,num2) {
 
             // Make the calculation with the first two numbers of otherArray
             let [num1, num2] = [...otherArray];
+
+
+        
             // Store the output into newResult
             newResult = operate(currentOperation, num1, num2);
         })
@@ -119,7 +126,7 @@ function operate(operator, num1,num2) {
                     }
                     
                     // Display displayValue and math symbol like below
-                    display.textContent =  `${displayValue} ${operator} `
+                    display.textContent =  `${(displayValue)} ${operator} `
                     // Push displayValue to our original array
                     array.push(displayValue);
                  
@@ -135,7 +142,7 @@ function operate(operator, num1,num2) {
                     // Check if it is equal button
                     if(array.length > 1) {
                         if(e.target.dataset.id !== 'equal') {
-                            displayValue = newResult.toFixed(1);
+                            displayValue = newResult;
                             display.textContent =  `${displayValue} ${operator} `
                         
                             array.push(displayValue);
@@ -169,7 +176,6 @@ function operate(operator, num1,num2) {
                 //More destructuring
                 
                 let result =operate(currentOperation, num1, num2)
-                
                 display.textContent = result;
                 displayValue = result;
                 // Set isResult to true to block user from pressing equal after result's gotten
@@ -183,8 +189,10 @@ function operate(operator, num1,num2) {
                 for (let number of num ) {
                     numbers.push(number);
             let [num1, num2, ...num] = numbers.slice(-2);
+            num1 = num1.toFixed(2);
+            num2 = num2.toFixed(2);
             result = operate(currentOperation, num1, num2);
-            display.textContent = result;
+            // display.textContent = result.toFixed(2);
             
             
         }
