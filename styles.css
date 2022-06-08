@@ -95,7 +95,7 @@ span {
 }
 
 .del {
-    grid-column: 2 / 4;
+    grid-column: 3 / 4;
     width: auto;
 }
 
