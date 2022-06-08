@@ -49,19 +49,29 @@ function operate(operator, num1,num2) {
  function populate() {
     numbers.forEach(number => {
         number.addEventListener('click', e => {
-
+      
+            // Return data-id of any number as a string when clicked
             currentInput = e.target.dataset.id;
+           
+         
+            // Concatenate it to displayValue
             displayValue  += currentInput;
+            // Convert displayValue to a number
             displayValue = +displayValue;
-            display.textContent = displayValue;
+            console.log(displayValue)
+            // Display it on the screen
+                    display.textContent = displayValue;
+            // Store it into otherArray to be able to calculate it immediately
             otherArray.push(displayValue);
 
-            // Calculate on display
+            // Make the calculation with the first two numbers of otherArray
             let [num1, num2] = [...otherArray];
+            // Store the output into newResult
             newResult = operate(currentOperation, num1, num2);
-
+            console.log('New Result: ' + newResult)
         })
     })
+    // Return displayValu to use it outside the function
     return displayValue;
  }
 
@@ -70,12 +80,13 @@ function operate(operator, num1,num2) {
 
  // Creating operator buttons
  function calc() {
-
+    // Listen for click events when clicked any button that include math symbols
      button.forEach(button => {
          button.addEventListener('click', e=> {
             
             if(!currentInput) return; // Guard Clause to aviod clicking without any input
-
+                // if click event's data-id equals to one of math symbols
+                // assign them accordingly and store them into operator variable
                   currentOperation = e.target.dataset.id;
                   let operator;
                 if(currentOperation === 'add') {
@@ -92,8 +103,12 @@ function operate(operator, num1,num2) {
                 if (currentOperation === 'divide') {
                         operator = '/';
                     }
-                    display.textContent =  `${+displayValue} ${operator} `
+
+                    // Display displayValue and math symbol like below
+                    display.textContent =  `${displayValue} ${operator} `
+                    // Push displayValue to our original array
                     array.push(displayValue);
+                 
                     
                     
                     // Reset display value to an empty string before moving on
@@ -104,14 +119,14 @@ function operate(operator, num1,num2) {
                     // Check if it is equal button
                     if(array.length > 1) {
                     if(e.target.dataset.id !== 'equal') {
-                       
                         displayValue = newResult;
-                        display.textContent =  `${+displayValue} ${operator} `
+                        display.textContent =  `${displayValue} ${operator} `
                         
                         array.push(displayValue);
-                        console.log(array)
                         array.length = 0;
-                        
+                        otherArray.length = 0;
+                        currentInput = '';
+                   
                         }
                     }
                     })
@@ -139,6 +154,7 @@ function operate(operator, num1,num2) {
             displayValue = result;
             
             if(result) {
+                
                 // Reset array 
                 array.length =0 ;   
                 let numbers = [];
@@ -171,6 +187,7 @@ function resetCalc() {
             array.length = 0;
             currentInput = "";
             result = "";
+            otherArray.length = 0;
         })
     }
     resetCalc();
