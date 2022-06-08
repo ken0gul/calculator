@@ -4,6 +4,7 @@ const numbers = document.querySelectorAll('.number');
 const button = document.querySelectorAll('button');
 const equal = document.querySelector('.equal');
 const ac = document.querySelector('.ac');
+const del = document.querySelector('[data-id = del]');
 
 
 // Global Variables
@@ -14,6 +15,8 @@ let currentOperation;
 let displayValue = '';
 let otherArray = []
 let newResult;
+let isResult = false;
+let isOperation = false;
 
 // Creating calculation functions
 // Add
@@ -49,6 +52,8 @@ function operate(operator, num1,num2) {
  function populate() {
     numbers.forEach(number => {
         number.addEventListener('click', e => {
+            isResult =false;
+            isOperation = false;
       
             // Return data-id of any number as a string when clicked
             currentInput = e.target.dataset.id;
@@ -83,27 +88,38 @@ function operate(operator, num1,num2) {
     // Listen for click events when clicked any button that include math symbols
      button.forEach(button => {
          button.addEventListener('click', e=> {
-            
-            if(!currentInput) return; // Guard Clause to aviod clicking without any input
-                // if click event's data-id equals to one of math symbols
-                // assign them accordingly and store them into operator variable
-                  currentOperation = e.target.dataset.id;
-                  let operator;
-                if(currentOperation === 'add') {
-                     operator = '+';
-                    }
-                if (currentOperation === 'minus') {
-                        operator = '-';
-                    }
-                    
-                if (currentOperation === 'multiply') {
-                        operator = '*';
-                    }
-                    
-                if (currentOperation === 'divide') {
-                        operator = '/';
-                    }
 
+
+            // Check if operation is default
+
+            if (isOperation === false) {
+
+                e.stopPropagation()
+                // Activate operation
+             // Check if it is del button.
+             // If yes return it
+             if(e.target.dataset.id === 'del') return; // Guard Clause
+             // isResult = false;
+            if(!currentInput) return; // Guard Clause to aviod clicking without any input
+            // if click event's data-id equals to one of math symbols
+            // assign them accordingly and store them into operator variable
+            currentOperation = e.target.dataset.id;
+            let operator;
+            if(currentOperation === 'add') {
+                operator = '+';
+            }
+            if (currentOperation === 'minus') {
+                operator = '-';
+            }
+            
+            if (currentOperation === 'multiply') {
+                operator = '*';
+            }
+            
+                if (currentOperation === 'divide') {
+                    operator = '/';
+                    }
+                    
                     // Display displayValue and math symbol like below
                     display.textContent =  `${displayValue} ${operator} `
                     // Push displayValue to our original array
@@ -114,25 +130,28 @@ function operate(operator, num1,num2) {
                     // Reset display value to an empty string before moving on
                     displayValue =  '';
                 
-                   
+
+                    // Set isOperation to true after you operated
+                   isOperation = true;
                     // If not pressed equal but want to calculate 
                     // Check if it is equal button
                     if(array.length > 1) {
-                    if(e.target.dataset.id !== 'equal') {
-                        displayValue = newResult;
-                        display.textContent =  `${displayValue} ${operator} `
+                        if(e.target.dataset.id !== 'equal') {
+                            displayValue = newResult;
+                            display.textContent =  `${displayValue} ${operator} `
                         
-                        array.push(displayValue);
-                        array.length = 0;
+                            array.push(displayValue);
+                            array.length = 0;
                         otherArray.length = 0;
                         currentInput = '';
                    
-                        }
                     }
-                    })
+                }
+            }
+            })
         })
     }
-
+    
     calc()
 
 
@@ -140,21 +159,26 @@ function operate(operator, num1,num2) {
     // Creating equal function
     function calcEqual() {
 
-        equal.addEventListener('click' , (e) =>  {
-            array.push(displayValue);
+        equal.addEventListener('click' , () =>  {
+            // Set isResult to default to be able to click equal
+            if(isResult === false) {
 
-       
-            let [num1, num2, ...num] = array;
+                array.push(displayValue);
+                
+                
+                let [num1, num2, ...num] = array;
+                
+                //More destructuring
+                
+                let result =operate(currentOperation, num1, num2)
+                
+                display.textContent = result;
+                displayValue = result;
+                // Set isResult to true to block user from pressing equal after result's gotten
+                isResult = true;
             
-            //More destructuring
-            
-            let result =operate(currentOperation, num1, num2)
-            
-            display.textContent = result;
-            displayValue = result;
             
             if(result) {
-                
                 // Reset array 
                 array.length =0 ;   
                 let numbers = [];
@@ -169,7 +193,7 @@ function operate(operator, num1,num2) {
         }
 
     }
-    
+}
     
 })
 return result;
@@ -191,3 +215,18 @@ function resetCalc() {
         })
     }
     resetCalc();
+
+
+// Delete button
+del.addEventListener('click', (e) => {
+    e.stopPropagation()
+    console.log(display.textContent)
+    console.log(array)
+    console.log(displayValue)
+
+    display.textContent = '';
+    array.length = 0;
+    displayValue = '';
+
+    
+})
