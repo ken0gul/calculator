@@ -63,7 +63,6 @@ function operate(operator, num1,num2) {
             displayValue  += currentInput;
             // Convert displayValue to a number
             displayValue = +displayValue;
-            console.log(displayValue)
             // Display it on the screen
                     display.textContent = displayValue;
             // Store it into otherArray to be able to calculate it immediately
@@ -73,7 +72,6 @@ function operate(operator, num1,num2) {
             let [num1, num2] = [...otherArray];
             // Store the output into newResult
             newResult = operate(currentOperation, num1, num2);
-            console.log('New Result: ' + newResult)
         })
     })
     // Return displayValu to use it outside the function
@@ -137,7 +135,7 @@ function operate(operator, num1,num2) {
                     // Check if it is equal button
                     if(array.length > 1) {
                         if(e.target.dataset.id !== 'equal') {
-                            displayValue = newResult;
+                            displayValue = newResult.toFixed(1);
                             display.textContent =  `${displayValue} ${operator} `
                         
                             array.push(displayValue);
@@ -184,7 +182,6 @@ function operate(operator, num1,num2) {
                 let numbers = [];
                 for (let number of num ) {
                     numbers.push(number);
-                    console.log(numbers)
             let [num1, num2, ...num] = numbers.slice(-2);
             result = operate(currentOperation, num1, num2);
             display.textContent = result;
@@ -219,11 +216,6 @@ function resetCalc() {
 
 // Delete button
 del.addEventListener('click', (e) => {
-    e.stopPropagation()
-    console.log(display.textContent)
-    console.log(array)
-    console.log(displayValue)
-
     display.textContent = '';
     array.length = 0;
     displayValue = '';
