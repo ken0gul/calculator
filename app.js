@@ -18,7 +18,7 @@ let otherArray = []
 let newResult;
 let isResult = false;
 let isOperation = false;
-
+let operator;
 // Creating calculation functions
 // Add
 function add(num1,num2) {
@@ -49,48 +49,64 @@ function operate(operator, num1,num2) {
     if(operator === 'divide') return divide(num1,num2)
  }
 
+
+
+
  // Creating populate function
  function populate() {
     numbers.forEach(number => {
         number.addEventListener('click', e => {
             isResult =false;
             isOperation = false;
-      
-            // Return data-id of any number as a string when clicked
-            currentInput = e.target.dataset.id;
-            
-         
-      
+                    // Return data-id of any number as a string when clicked
+                    
+                if(displayValue === '') {
 
-            // Concatenate it to displayValue
-            displayValue  += currentInput;
-            // Convert displayValue to a number
-            if (displayValue !== "." ) displayValue = +displayValue;
-            displayValue = displayValue
-            // Display it on the screen
+                    currentInput = e.target.dataset.id;
+                    
+                
+                    // Concatenate it to displayValue
+                    displayValue  += currentInput;
+                // Convert displayValue to a number
+                if (displayValue !== "." ) displayValue = +displayValue;
+                    displayValue = displayValue
+                    // Display it on the screen
                     display.textContent = displayValue;
-            // Store it into otherArray to be able to calculate it immediately
-            otherArray.push(displayValue);
-
-            // Make the calculation with the first two numbers of otherArray
-            let [num1, num2] = [...otherArray];
-
-
+                    // Store it into otherArray to be able to calculate it immediately
+                    otherArray.push(displayValue);
+                    
+                    // Make the calculation with the first two numbers of otherArray
+                    let [num1, num2] = [...otherArray];
+                    
+                    
+                    
+                    // Store the output into newResult
+                    newResult = operate(currentOperation, num1, num2);
+                   
+                    
+                    
+                    
+                } else {
+                    currentInput = e.target.dataset.id;
+                    display.textContent = `${displayValue} ${operator} ${currentInput}`;
+                    array.push(displayValue);
+                    currentInput = +currentInput
+                    array.push(currentInput);
+                }
+                
+                
+                })
+            })
+            // Return displayValu to use it outside the function
+            return displayValue;
+        }
         
-            // Store the output into newResult
-            newResult = operate(currentOperation, num1, num2);
-        })
-    })
-    // Return displayValu to use it outside the function
-    return displayValue;
- }
-
- populate()
-
-
- // Creating operator buttons
- function calc() {
-    // Listen for click events when clicked any button that include math symbols
+        populate()
+        
+        
+        // Creating operator buttons
+        function calc() {
+            // Listen for click events when clicked any button that include math symbols
      button.forEach(button => {
          button.addEventListener('click', e=> {
 
@@ -109,7 +125,7 @@ function operate(operator, num1,num2) {
             // if click event's data-id equals to one of math symbols
             // assign them accordingly and store them into operator variable
             currentOperation = e.target.dataset.id;
-            let operator;
+            
             if(currentOperation === 'add') {
                 operator = '+';
             }
@@ -126,7 +142,7 @@ function operate(operator, num1,num2) {
                     }
                     
                     // Display displayValue and math symbol like below
-                    display.textContent =  `${(displayValue)} ${operator} `
+                    display.textContent =  `${displayValue} ${operator} `
                     // Push displayValue to our original array
                     array.push(displayValue);
                  
@@ -144,17 +160,18 @@ function operate(operator, num1,num2) {
                         if(e.target.dataset.id !== 'equal') {
                             displayValue = newResult;
                             display.textContent =  `${displayValue} ${operator} `
-                        
-                            array.push(displayValue);
+                            // array.push(displayValue);
                             array.length = 0;
                         otherArray.length = 0;
                         currentInput = '';
+                        
                    
                     }
                 }
             }
             })
         })
+        return displayValue;
     }
     
     calc()
@@ -165,6 +182,7 @@ function operate(operator, num1,num2) {
     function calcEqual() {
 
         equal.addEventListener('click' , () =>  {
+            console.log("ARRAY " , array)
             // Set isResult to default to be able to click equal
             if(isResult === false) {
 
@@ -189,8 +207,7 @@ function operate(operator, num1,num2) {
                 for (let number of num ) {
                     numbers.push(number);
             let [num1, num2, ...num] = numbers.slice(-2);
-            num1 = num1.toFixed(2);
-            num2 = num2.toFixed(2);
+           
             result = operate(currentOperation, num1, num2);
             // display.textContent = result.toFixed(2);
             
