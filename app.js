@@ -141,8 +141,11 @@ deleteBtn.addEventListener('click', () => {
 
 acBtn.addEventListener('click', () => {
     display.textContent = "";
-    firstNumber = null;
-    secondNumber = null;
-    currentOperation = ""
-    nextOperation = ""
+     firstNumber = null;
+     secondNumber = null;
+     currentOperation = ""
+     nextOperation = ""
+     currentInput = ""
+     result = ""
+     isNextOperationComplete = false;
 })
