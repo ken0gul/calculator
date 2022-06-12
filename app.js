@@ -111,7 +111,7 @@ equal.addEventListener('click', e => {
     secondNumber = Number(display.textContent)
     if (isNextOperationComplete === true) {
         result = operate(nextOperation, firstNumber, secondNumber);
-        display.textContent = result;
+        display.textContent = result.toFixed(1);
         isNextOperationComplete = false;
         console.log("First Number : " ,firstNumber);
         console.log("Second Number: " ,secondNumber);
@@ -121,8 +121,8 @@ equal.addEventListener('click', e => {
 
         // Make the calculation
         result = operate(currentOperation, firstNumber, secondNumber);
-        display.textContent = result;
-        firstNumber = result;
+        display.textContent = result.toFixed(1);
+        firstNumber = result
         console.log("First Number : " ,firstNumber);
         console.log("Second Number: " ,secondNumber);
         console.log("Next Operation ", nextOperation)
