@@ -23,7 +23,7 @@ h1 {
 
 .calculator {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
+    grid-template-columns: repeat(4, 1fr);
     justify-content: center;
     font-size: 45px;
 
@@ -32,6 +32,13 @@ h1 {
     box-shadow: 8px 6px 20px white;
 
 
+}
+
+@media screen and (min-width: 768px) {
+    .calculator {
+        width: 200px;
+        margin: 75px auto;
+    }
 }
 
 button,
