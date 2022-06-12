@@ -1,24 +1,21 @@
-// Selecting Elements
+// Selecting elements
 const display = document.querySelector('.display');
-const numbers = document.querySelectorAll('.number');
-const button = document.querySelectorAll('button');
-const equal = document.querySelector('.equal');
-const ac = document.querySelector('.ac');
-const del = document.querySelector('[data-id = del]');
-const dot = document.querySelector('[data-id = dot]');
-
+const numbers = document.querySelectorAll('[data-number]');
+const operationButtons = document.querySelectorAll('[data-operation]');
+const deleteBtn = document.querySelector('[data-delete]');
+const acBtn = document.querySelector('[data-ac]');
+const decimalPoint = document.querySelector('[data-decimal]');
+const equal = document.querySelector('[data-equal]')
 
 // Global Variables
-let array = [];
+let firstNumber = null;
+let secondNumber = null;
+let currentOperation;
+let nextOperation;
 let currentInput;
 let result;
-let currentOperation;
-let displayValue = '';
-let otherArray = []
-let newResult;
-let isResult = false;
-let isOperation = false;
-let operator;
+let isNextOperationComplete = false;
+
 // Creating calculation functions
 // Add
 function add(num1,num2) {
@@ -27,17 +24,17 @@ function add(num1,num2) {
 
 // Subtract
 function subtract (num1,num2) {
-    return (num1 - num2);
+    return num1 - num2;
 }
 
 //Multiply
 function multiply(num1,num2) {
-    return (num1 * num2);
+    return num1 * num2;
 }
 
 // Divide 
 function divide(num1,num2) {
-    return (num1/num2);
+    return num1/num2;
 }
 
 
@@ -50,200 +47,102 @@ function operate(operator, num1,num2) {
  }
 
 
-
-
- // Creating populate function
- function populate() {
-    numbers.forEach(number => {
-        number.addEventListener('click', e => {
-            isResult =false;
-            isOperation = false;
-                    // Return data-id of any number as a string when clicked
-                    
-                if(displayValue === '') {
-
-                    currentInput = e.target.dataset.id;
-                    
-                
-                    // Concatenate it to displayValue
-                    displayValue  += currentInput;
-                // Convert displayValue to a number
-                if (displayValue !== "." ) displayValue = +displayValue;
-                    displayValue = displayValue
-                    // Display it on the screen
-                    display.textContent = displayValue;
-                    // Store it into otherArray to be able to calculate it immediately
-                    otherArray.push(displayValue);
-                    
-                    // Make the calculation with the first two numbers of otherArray
-                    let [num1, num2] = [...otherArray];
-                    
-                    
-                    
-                    // Store the output into newResult
-                    newResult = operate(currentOperation, num1, num2);
-                   
-                    
-                    
-                    
-                } else {
-                    currentInput = e.target.dataset.id;
-                    display.textContent = `${displayValue} ${operator} ${currentInput}`;
-                    array.push(displayValue);
-                    currentInput = +currentInput
-                    array.push(currentInput);
-                }
-                
-                
-                })
-            })
-            // Return displayValu to use it outside the function
-            return displayValue;
-        }
-        
-        populate()
-        
-        
-        // Creating operator buttons
-        function calc() {
-            // Listen for click events when clicked any button that include math symbols
-     button.forEach(button => {
-         button.addEventListener('click', e=> {
-
-
-            // Check if operation is default
-
-            if (isOperation === false) {
-
-                e.stopPropagation()
-                // Activate operation
-             // Check if it is del button.
-             // If yes return it
-             if(e.target.dataset.id === 'del') return; // Guard Clause
-             // isResult = false;
-            if(!currentInput) return; // Guard Clause to aviod clicking without any input
-            // if click event's data-id equals to one of math symbols
-            // assign them accordingly and store them into operator variable
-            currentOperation = e.target.dataset.id;
-            
-            if(currentOperation === 'add') {
-                operator = '+';
-            }
-            if (currentOperation === 'minus') {
-                operator = '-';
-            }
-            
-            if (currentOperation === 'multiply') {
-                operator = '*';
-            }
-            
-                if (currentOperation === 'divide') {
-                    operator = '/';
-                    }
-                    
-                    // Display displayValue and math symbol like below
-                    display.textContent =  `${displayValue} ${operator} `
-                    // Push displayValue to our original array
-                    array.push(displayValue);
-                 
-                    
-                    
-                    // Reset display value to an empty string before moving on
-                    displayValue =  '';
-                
-
-                    // Set isOperation to true after you operated
-                   isOperation = true;
-                    // If not pressed equal but want to calculate 
-                    // Check if it is equal button
-                    if(array.length > 1) {
-                        if(e.target.dataset.id !== 'equal') {
-                            displayValue = newResult;
-                            display.textContent =  `${displayValue} ${operator} `
-                            // array.push(displayValue);
-                            array.length = 0;
-                        otherArray.length = 0;
-                        currentInput = '';
-                        
-                   
-                    }
-                }
-            }
-            })
-        })
-        return displayValue;
-    }
-    
-    calc()
-
-
-    // Equal operator
-    // Creating equal function
-    function calcEqual() {
-
-        equal.addEventListener('click' , () =>  {
-            console.log("ARRAY " , array)
-            // Set isResult to default to be able to click equal
-            if(isResult === false) {
-
-                array.push(displayValue);
-                
-                
-                let [num1, num2, ...num] = array;
-                
-                //More destructuring
-                
-                let result =operate(currentOperation, num1, num2)
-                display.textContent = result;
-                displayValue = result;
-                // Set isResult to true to block user from pressing equal after result's gotten
-                isResult = true;
-            
-            
-            if(result) {
-                // Reset array 
-                array.length =0 ;   
-                let numbers = [];
-                for (let number of num ) {
-                    numbers.push(number);
-            let [num1, num2, ...num] = numbers.slice(-2);
-           
-            result = operate(currentOperation, num1, num2);
-            // display.textContent = result.toFixed(2);
-            
-            
-        }
-
-    }
-}
-    
+// Numbers
+numbers.forEach(number => {
+    number.addEventListener('click', e=> { 
+               // Display input
+               currentInput = e.target.dataset.number;
+               display.textContent += currentInput;
+               
+               
+       
+    })
 })
-return result;
-
-}
-calcEqual()
 
 
-// Reset Button 
+// Decimal point
+decimalPoint.addEventListener('click', () => {
+    display.textContent += `${decimalPoint.innerText}`
+})
 
-function resetCalc() {
-        ac.addEventListener('click', () => {
-            displayValue = '';
-            display.textContent = '';
-            array.length = 0;
-            currentInput = "";
-            result = "";
-            otherArray.length = 0;
-        })
+// Operation buttons
+operationButtons.forEach(button => {
+    button.addEventListener('click', e => {
+       
+        // When there is no input firstNumber is null and we do not have any result
+            if(firstNumber === null && !result) {
+
+            currentOperation = e.target.dataset.operation;
+            firstNumber = Number(display.textContent);
+            display.textContent = "";
+            
+        } else if (firstNumber !== null && !result ) {
+            secondNumber = Number(display.textContent)
+            display.textContent = ''
+        } else if (result){
+            currentOperation = e.target.dataset.operation;
+            firstNumber = Number(display.textContent);
+            display.textContent = "";
+           
+        }
+
+        if (firstNumber && secondNumber ) {
+            if(!result && isNextOperationComplete === false) {
+                firstNumber = operate(currentOperation, firstNumber, secondNumber);
+                nextOperation = e.target.dataset.operation;
+                isNextOperationComplete = true;
+           
+            }
+
+            
+        }
+
+       
+
+      
+
+    })
+})
+
+
+
+// Equal button
+equal.addEventListener('click', e => {
+    secondNumber = Number(display.textContent)
+    if (isNextOperationComplete === true) {
+        result = operate(nextOperation, firstNumber, secondNumber);
+        display.textContent = result;
+        isNextOperationComplete = false;
+        console.log("First Number : " ,firstNumber);
+        console.log("Second Number: " ,secondNumber);
+        console.log("Next Operation ", nextOperation)
+        console.log("Current Operation ", currentOperation)
+    } else {
+
+        // Make the calculation
+        result = operate(currentOperation, firstNumber, secondNumber);
+        display.textContent = result;
+        firstNumber = result;
+        console.log("First Number : " ,firstNumber);
+        console.log("Second Number: " ,secondNumber);
+        console.log("Next Operation ", nextOperation)
     }
-    resetCalc();
+
+})
 
 
-// Delete button
-del.addEventListener('click', (e) => {
-    display.textContent = '';
-    array.length = 0;
-    displayValue = '';
+// Delete function
+deleteBtn.addEventListener('click', () => {
+    display.textContent = display.textContent.substring(0, display.textContent.length-1)
 
-    
+})
+
+// AC 
+
+acBtn.addEventListener('click', () => {
+    display.textContent = "";
+    firstNumber = null;
+    secondNumber = null;
+    currentOperation = ""
+    nextOperation = ""
 })
