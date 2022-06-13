@@ -151,7 +151,10 @@ function calcEqual() {
         secondNumber = Number(display.textContent)
     if (isNextOperationComplete === true) {
         result = operate(nextOperation, firstNumber, secondNumber);
-        display.textContent = result.toFixed(1);
+       
+        // Check if the result is an integer. If it is no decimal, if not add 1 decimal
+         display.textContent = Number.isInteger(result) ? result : result.toFixed(1);
+        
         isNextOperationComplete = false;
         
         
@@ -160,7 +163,10 @@ function calcEqual() {
         // Make the calculation
         result = operate(currentOperation, firstNumber, secondNumber);
         
-        display.textContent = result.toFixed(1);
+        // Check if the result is an integer. If it is no decimal, if not add 1 decimal
+        display.textContent = Number.isInteger(result) ? result : result.toFixed(1);
+
+        
         if(display.textContent.includes('Infinity') || display.textContent.includes('NaN')) {
             display.textContent = "Sorry that's invalid"
             setTimeout(()=> alert('Press AC to start over'),1000);
