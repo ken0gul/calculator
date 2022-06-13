@@ -15,6 +15,9 @@ let nextOperation;
 let currentInput;
 let result;
 let isNextOperationComplete = false;
+let array = [];
+let newResult;
+let a;
 
 // Creating calculation functions
 // Add
@@ -50,11 +53,12 @@ function operate(operator, num1,num2) {
 // Numbers
 numbers.forEach(number => {
     number.addEventListener('click', e=> { 
-               // Display input
-               currentInput = e.target.dataset.number;
-               display.textContent += currentInput;
-               
-               
+        // Display input
+        currentInput = e.target.dataset.number;
+        display.textContent += currentInput;
+        
+       
+      
        
     })
 })
@@ -68,7 +72,6 @@ decimalPoint.addEventListener('click', () => {
 // Operation buttons
 operationButtons.forEach(button => {
     button.addEventListener('click', e => {
-       
         // When there is no input firstNumber is null and we do not have any result
             if(firstNumber === null && !result) {
 
@@ -76,22 +79,35 @@ operationButtons.forEach(button => {
             firstNumber = Number(display.textContent);
             display.textContent = "";
             
-        } else if (firstNumber !== null && !result ) {
-            secondNumber = Number(display.textContent)
-            display.textContent = ''
-        } else if (result){
-            currentOperation = e.target.dataset.operation;
-            firstNumber = Number(display.textContent);
-            display.textContent = "";
-           
-        }
+            } else if (firstNumber !== null && !result ) {
+                secondNumber = Number(display.textContent)
+                display.textContent = ''
+            } else if (result){
+                currentOperation = e.target.dataset.operation;
+                firstNumber = Number(display.textContent);
+                display.textContent = "";
+            
+            }
 
-        if (firstNumber && secondNumber ) {
-            if(!result && isNextOperationComplete === false) {
-                firstNumber = operate(currentOperation, firstNumber, secondNumber);
+            if (firstNumber && secondNumber ) {
+                if(!result && isNextOperationComplete === false) {
+                newResult = operate(currentOperation, firstNumber, secondNumber);
+                firstNumber = newResult;
                 nextOperation = e.target.dataset.operation;
                 isNextOperationComplete = true;
-           
+
+                console.log(firstNumber, secondNumber, nextOperation)
+                
+            
+               
+            }
+
+            else if(firstNumber === newResult) {
+                currentOperation = e.target.dataset.operation;
+                console.log(currentOperation)
+               firstNumber =operate(nextOperation, firstNumber,secondNumber);
+               console.log(currentOperation)
+               isNextOperationComplete = false;
             }
 
             
@@ -113,19 +129,15 @@ equal.addEventListener('click', e => {
         result = operate(nextOperation, firstNumber, secondNumber);
         display.textContent = result.toFixed(1);
         isNextOperationComplete = false;
-        console.log("First Number : " ,firstNumber);
-        console.log("Second Number: " ,secondNumber);
-        console.log("Next Operation ", nextOperation)
-        console.log("Current Operation ", currentOperation)
+     
+       
     } else {
 
         // Make the calculation
         result = operate(currentOperation, firstNumber, secondNumber);
         display.textContent = result.toFixed(1);
         firstNumber = result
-        console.log("First Number : " ,firstNumber);
-        console.log("Second Number: " ,secondNumber);
-        console.log("Next Operation ", nextOperation)
+       
     }
 
 })
