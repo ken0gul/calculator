@@ -154,6 +154,7 @@ numbers.forEach(number => {
 
 // Decimal point
 decimalPoint.addEventListener('click', () => {
+    if(display.textContent.includes('.')) return; // Guard Clause to prevent adding more than one decimal point
     display.textContent += `${decimalPoint.innerText}`
 })
 
