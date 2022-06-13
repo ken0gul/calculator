@@ -17,7 +17,26 @@ let result;
 let isNextOperationComplete = false;
 let array = [];
 let newResult;
-let a;
+let operator;
+
+
+// Keyboard Support
+// Works only for numbers not operation Buttons
+window.addEventListener('keydown' , e=> {
+    currentInput = e.key;
+    if(currentInput === "Escape" || currentInput === "Shift" || currentInput === "Control" || currentInput === 'Alt') return;
+    if (currentInput === 'F1' || currentInput === 'F2' || currentInput === 'F3' || currentInput === 'F4' || currentInput === 'F5' || currentInput === 'F6' || currentInput === 'F7' || currentInput === "F8" || currentInput === "F9" || currentInput === "F10" || currentInput === "F11" || currentInput === "F12") return;
+
+    if(currentInput === "Backspace") {
+        display.textContent = display.textContent.substring(0, display.textContent.length-1)
+        return;
+    }
+    if(currentInput === "=") return;
+    display.textContent += currentInput;
+   
+
+})
+
 
 // Creating calculation functions
 // Add
@@ -32,13 +51,16 @@ function subtract (num1,num2) {
 
 //Multiply
 function multiply(num1,num2) {
+   
     return num1 * num2;
 }
 
 // Divide 
 function divide(num1,num2) {
+ 
     return num1/num2;
 }
+
 
 
 // Creating `Operate` function
@@ -123,24 +145,35 @@ operationButtons.forEach(button => {
 
 
 // Equal button
-equal.addEventListener('click', e => {
-    secondNumber = Number(display.textContent)
+function calcEqual() {
+
+    equal.addEventListener('click', e => {
+        secondNumber = Number(display.textContent)
     if (isNextOperationComplete === true) {
         result = operate(nextOperation, firstNumber, secondNumber);
         display.textContent = result.toFixed(1);
         isNextOperationComplete = false;
-     
-       
+        
+        
     } else {
 
         // Make the calculation
         result = operate(currentOperation, firstNumber, secondNumber);
+        
         display.textContent = result.toFixed(1);
+        if(display.textContent.includes('Infinity') || display.textContent.includes('NaN')) {
+            display.textContent = "Sorry that's invalid"
+            setTimeout(()=> alert('Press AC to start over'),1000);
+            setTimeout(cleanAll, 3000);
+        }
         firstNumber = result
-       
+        
     }
 
 })
+}
+
+calcEqual();
 
 
 // Delete function
@@ -149,15 +182,22 @@ deleteBtn.addEventListener('click', () => {
 
 })
 
-// AC 
+// AC => use cleanAll callback function
+function allClear() {
 
-acBtn.addEventListener('click', () => {
-    display.textContent = "";
-     firstNumber = null;
-     secondNumber = null;
-     currentOperation = ""
-     nextOperation = ""
-     currentInput = ""
-     result = ""
-     isNextOperationComplete = false;
-})
+    acBtn.addEventListener('click', cleanAll);
+}
+
+allClear();
+
+// Clean everything
+function cleanAll () {
+        display.textContent = "";
+        firstNumber = null;
+        secondNumber = null;
+        currentOperation = ""
+        nextOperation = ""
+        currentInput = ""
+        result = ""
+        isNextOperationComplete = false;
+}
