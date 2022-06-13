@@ -72,6 +72,51 @@ function operate(operator, num1,num2) {
  }
 
 
+ // Create a function for all calculations
+ function calcAll (e) {
+    // When there is no input firstNumber is null and we do not have any result
+    if(firstNumber === null && !result) {
+
+        currentOperation = e.target.dataset.operation;
+        firstNumber = Number(display.textContent);
+        display.textContent = "";
+        
+        } else if (firstNumber !== null && !result ) {
+            secondNumber = Number(display.textContent)
+            display.textContent = ''
+        } else if (result){
+            currentOperation = e.target.dataset.operation;
+            firstNumber = Number(display.textContent);
+            display.textContent = "";
+        
+        }
+
+        if (firstNumber && secondNumber ) {
+            if(!result && isNextOperationComplete === false) {
+            newResult = operate(currentOperation, firstNumber, secondNumber);
+            firstNumber = newResult;
+            nextOperation = e.target.dataset.operation;
+            isNextOperationComplete = true;
+
+            console.log(firstNumber, secondNumber, nextOperation)
+            
+        
+           
+        }
+
+        else if(firstNumber === newResult) {
+            currentOperation = e.target.dataset.operation;
+            console.log(currentOperation)
+           firstNumber =operate(nextOperation, firstNumber,secondNumber);
+           console.log(currentOperation)
+           isNextOperationComplete = false;
+        }
+
+        
+    }
+ }
+
+
 // Numbers
 numbers.forEach(number => {
     number.addEventListener('click', e=> { 
@@ -93,53 +138,8 @@ decimalPoint.addEventListener('click', () => {
 
 // Operation buttons
 operationButtons.forEach(button => {
-    button.addEventListener('click', e => {
-        // When there is no input firstNumber is null and we do not have any result
-            if(firstNumber === null && !result) {
-
-            currentOperation = e.target.dataset.operation;
-            firstNumber = Number(display.textContent);
-            display.textContent = "";
-            
-            } else if (firstNumber !== null && !result ) {
-                secondNumber = Number(display.textContent)
-                display.textContent = ''
-            } else if (result){
-                currentOperation = e.target.dataset.operation;
-                firstNumber = Number(display.textContent);
-                display.textContent = "";
-            
-            }
-
-            if (firstNumber && secondNumber ) {
-                if(!result && isNextOperationComplete === false) {
-                newResult = operate(currentOperation, firstNumber, secondNumber);
-                firstNumber = newResult;
-                nextOperation = e.target.dataset.operation;
-                isNextOperationComplete = true;
-
-                console.log(firstNumber, secondNumber, nextOperation)
-                
-            
-               
-            }
-
-            else if(firstNumber === newResult) {
-                currentOperation = e.target.dataset.operation;
-                console.log(currentOperation)
-               firstNumber =operate(nextOperation, firstNumber,secondNumber);
-               console.log(currentOperation)
-               isNextOperationComplete = false;
-            }
-
-            
-        }
-
-       
-
-      
-
-    })
+    // Add an event listener to each button and call calcAll function on them
+    button.addEventListener('click', calcAll)
 })
 
 
